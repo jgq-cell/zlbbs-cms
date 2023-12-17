@@ -62,7 +62,47 @@ git commit -m "创建项目xxx"
 git push <远程主机名> <本地分支名>:[远程分支名，可省略默认远程与本地分支名相同]
 ```
 
-### 4、安装 ElementPlus
+### 4、VScode 简单配置 Eslint + Prettier
+
+`所有步骤完成后重启VScode`
+
+#### 4.1、VScode 安装`ESLint`与`Prettier-CodeFormatter`插件
+
+#### 4.2、npm 安装 eslint
+
+```
+cnpm install eslint-plugin-vue --save-dev
+# 如果报错可补充安装
+# cnmp install eslint --save-dev
+```
+
+#### 4.3、创建`.eslintrc.js`文件，配置规则
+
+```
+module.exports = {
+  root: true,
+  extends: ['plugin:vue/vue3-essential', 'eslint:recommended'],
+  rules: {
+    // 解决prettier与eslint规则冲突
+    indent: 0,
+    'space-before-function-paren': 0,
+    // 关闭组件命名规则
+    'vue/multi-word-component-names': 'off'
+  }
+}
+```
+
+#### 4.4、创建`.prettierrc`文件，配置规则
+
+```
+{
+  "semi": false,
+  "singleQuote": true,
+  "trailingComma": "none"
+}
+```
+
+### 5、安装 ElementPlus
 
 ```
 # 安装到生产依赖（--save 线上）
@@ -73,4 +113,24 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 ```
 
-### 四、项目编写
+## 二、项目编写
+
+### 1、整体页面构造
+
+Element-plus
+
+- Container 布局容器：搭建页面基本结构
+- Navigation 导航->Menu 菜单导航组件->Icon 图标组件
+  备注：element-plus Icon 图标不够用的时候，使用阿里“icontfont”[font-class 或 symbol 方式引用]
+
+### 2、路由
+
+Vue Router
+
+#### 2.1、路由配置
+
+- src 目录下新建 router.js 文件
+- 导入组件、配置路由与组件的映射关系、创建路由实例并导出
+- main.js 文件中注册路由实例
+
+#### 2.2、组件使用路由（根据组件的属性而定）
