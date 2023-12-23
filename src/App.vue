@@ -60,6 +60,7 @@
         </el-aside>
         <el-container>
           <el-main class="main">
+            <!-- 路由出口：路由匹配到的组件渲染在此 -->
             <router-view />
           </el-main>
           <el-footer class="footer">这是Footer</el-footer>
@@ -86,6 +87,11 @@ export default {
     Postcard,
     Comment,
     User
+  },
+  mounted() {
+    if (!this.$auth.is_staff) {
+      window.location.href = 'http://127.0.0.1:5000'
+    }
   }
 }
 </script>
