@@ -143,3 +143,17 @@ CMS 后台管理系统：需要能够判断用户是否登录<有用户信息>�
 前后端分离开发环境是不同的域：比如前端是 localhost:8080，后台是 localhost:5000, 这种属于 ip 不同的跨域
 
 - token 与用户信息都存在 localstore 中, 所以需要将后台登录成功后的 localstore 信息复制到 cms 前端 localstore 中，便于测试
+
+### 3、网络请求
+```
+cnpm install axios --save
+cnpm install qs --save
+```
+**axios 网络请求库**
+_设置基础域名 baseurl, 设置拦截器(将 token 写入请求头)_
+**qs 参数序列化和解析库**
+_qs.parse()是将 URL 解析成对象的形式_
+qs.parse("username='admin'&password='admin'") // Object { username: "admin", password: "admin" }
+_qs.stringify()是将对象 序列化成 URL 的形式，以&进行拼接_
+qs.stringify({username:'admin', password:'admin'}) //username=admin&password=admin
+

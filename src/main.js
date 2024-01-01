@@ -4,6 +4,7 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import router from '@/router.js'
 import auth from '@/utils/auth.js'
+import http from '@/utils/http.js'
 
 const app = createApp(App)
 // 支持Element-plus
@@ -12,4 +13,6 @@ app.use(ElementPlus)
 app.use(router)
 // 定义全局变量，用于判断是否登录，项目中可用“this.auth”
 app.config.globalProperties.$auth = auth
+// 定义全局变量，网络请求封装
+app.config.globalProperties.$http = http
 app.mount('#app')
