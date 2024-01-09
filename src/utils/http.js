@@ -16,19 +16,25 @@ class Http {
     this.http.interceptors.request.use((config) => {
       const token = auth.token
       if (token) {
-        config.headers.common.Authorization = 'Bearer ' + token
+        config.headers['Authorization'] = 'Bearer ' + token
       }
       return config
     })
 
     // 响应拦截
-    // this.http.interceptors.response.use((response) => {
-    //   return response.data
-    // })
+    this.http.interceptors.response.use((response) => {
+      return response.data
+    })
   }
 
   _post(url, data) {
     return this.http.post(url, qs.stringify(data))
+  }
+
+  // 添加轮播图
+  addBanner(data) {
+    const url = '/banner/add'
+    return this._post(url, data)
   }
 }
 

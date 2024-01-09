@@ -145,10 +145,12 @@ CMS 后台管理系统：需要能够判断用户是否登录<有用户信息>�
 - token 与用户信息都存在 localstore 中, 所以需要将后台登录成功后的 localstore 信息复制到 cms 前端 localstore 中，便于测试
 
 ### 3、网络请求
+
 ```
 cnpm install axios --save
 cnpm install qs --save
 ```
+
 **axios 网络请求库**
 _设置基础域名 baseurl, 设置拦截器(将 token 写入请求头)_
 **qs 参数序列化和解析库**
@@ -157,3 +159,42 @@ qs.parse("username='admin'&password='admin'") // Object { username: "admin", pas
 _qs.stringify()是将对象 序列化成 URL 的形式，以&进行拼接_
 qs.stringify({username:'admin', password:'admin'}) //username=admin&password=admin
 
+### 4、轮播图上传
+
+#### 4.1、Element-plus
+
+- el-space 间距组件
+  ps: 为子组件添加统一间距
+
+```
+<el-space direction="vertical" :size="20" style="width: 100%">
+```
+
+- el-dialog 弹框
+  ps: el-form 弹出表单对话框，默认不显示，为按钮添加点击事件切换显示
+- el-upload 上传组件
+  ps: action 属性表示组件发送的请求，并未经过 axios，如果不设置 header-jwt 就不会通过身份验证
+  bug: `show-file-list`属性: 是否显示已上传文件列表，如果不设置为 false，影响布局
+
+#### 4.2、后端解决跨域问题
+
+注册跨域解决方案-cors，resources 允许访问的路由，origins 为允许访问的域名
+
+```python
+from flask_cors import CORS
+cors = CORS()
+cors.init_app(app, resources={r"/cmsapi/*": {"origins": "*"}})
+```
+
+排除 cmsapi 蓝图的 csrf 的验证
+
+```python
+from flask_wtf import CSRFProtect
+csrf = CSRFProtect()
+csrf.exempt(cmsapi_bp)
+```
+#### 4.3、axios请求头问题
+新版本header.common.Authorization ==> header.Authorization
+```
+config.headers['Authorization'] = 'Bearer ' + token
+```
