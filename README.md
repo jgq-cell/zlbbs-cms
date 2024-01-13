@@ -193,8 +193,77 @@ from flask_wtf import CSRFProtect
 csrf = CSRFProtect()
 csrf.exempt(cmsapi_bp)
 ```
-#### 4.3、axios请求头问题
-新版本header.common.Authorization ==> header.Authorization
+
+#### 4.3、axios 请求头问题
+
+新版本 header.common.Authorization ==> header.Authorization
+
 ```
 config.headers['Authorization'] = 'Bearer ' + token
+```
+
+#### 5、轮播图表格
+
+- el-table Table 表格组件
+  prop 属性，绑定行字段值，label 属性，显示的页面表头名称
+- el-table-column 表格列组件
+  对行进行操作--> template 具名插槽模板，可以自定义显示内容
+
+```
+<el-table-column fixed="right" label="Operations" width="120">
+  <template #default>
+      <el-button link type="primary" size="small" @click="handleClick"
+        >Detail</el-button>
+  </template>
+</el-table-column>
+```
+
+对行进行操作--> template+scope 具名插槽模板，scope.row.x 可以获取整行的值
+
+```
+<el-table-column label="图片">
+  <template #default="scope">
+    <el-image
+      :src="this.$http.server_host + scope.row.image_url"
+      style="width: 100px; height: 60px"
+    />
+  </template>
+</el-table-column>
+```
+
+#### 5.1、轮播图添加、删除、编辑
+
+**未分页**:列表增(unshift、push)、删(splice)、改(splice)
+
+```
+// 新增
+let data = res.data
+this.banners.unshift(data)  # 列表中添加元素到开头
+// 删除
+this.deleteIndex = 2
+this.banners.splice(this.deleteIndex, 1)  # 列表中删除索引为2的元素
+// 编辑
+this.editIndex = 2
+let data = res.data
+this.banners.splice(this.editIndex, 1, data)  # 替换索引为2的元素（先删除后插入）
+```
+
+**分页**:列表增、删、改
+初步想法：重新请求当前页数据，特别地，删除操作判断当前页是否还有数据，如果没有，则请求前一页数据
+
+#### 5.2、分页
+
+- el-pagination 分页组件
+  分页组件居中对齐
+
+```
+<div style="display: flex; justify-content: center">
+  <el-pagination
+    background
+    layout="prev, pager, next"
+    :total="count"
+    :current-page="page"
+    @current-change="onPageChange"
+  />
+</div>
 ```

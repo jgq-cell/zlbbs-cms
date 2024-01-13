@@ -4,7 +4,7 @@
       <el-header class="header">
         <a href="/" class="brand"><strong>Python</strong>管理系统</a>
         <div class="header-content">
-          <div class="greet">欢迎，周杰伦</div>
+          <div class="greet">欢迎，{{ this.$auth.user['username'] }}</div>
           <div class="signout">回到首页</div>
         </div>
       </el-header>
