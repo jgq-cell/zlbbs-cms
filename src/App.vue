@@ -4,7 +4,11 @@
       <el-header class="header">
         <a href="/" class="brand"><strong>Python</strong>管理系统</a>
         <div class="header-content">
-          <div class="greet">欢迎，{{ this.$auth.user['username'] }}</div>
+          <div class="greet">
+            欢迎，{{ $auth.user['username'] }}[{{
+              this.$auth.user.role['name']
+            }}]
+          </div>
           <div class="signout">回到首页</div>
         </div>
       </el-header>
@@ -27,28 +31,44 @@
                   </template>
                 </el-menu-item>
 
-                <el-menu-item index="2" :route="{ name: 'banner' }">
+                <el-menu-item
+                  index="2"
+                  :route="{ name: 'banner' }"
+                  v-if="has_permission('banner')"
+                >
                   <template #title>
                     <el-icon><PictureRounded /></el-icon>
                     <span>轮播图</span>
                   </template>
                 </el-menu-item>
 
-                <el-menu-item index="3" :route="{ name: 'post' }">
+                <el-menu-item
+                  index="3"
+                  :route="{ name: 'post' }"
+                  v-if="has_permission('post')"
+                >
                   <template #title>
                     <el-icon><Postcard /></el-icon>
                     <span>帖子管理</span>
                   </template>
                 </el-menu-item>
 
-                <el-menu-item index="4" :route="{ name: 'comment' }">
+                <el-menu-item
+                  index="4"
+                  :route="{ name: 'comment' }"
+                  v-if="has_permission('comment')"
+                >
                   <template #title>
                     <el-icon><Comment /></el-icon>
                     <span>评论管理</span>
                   </template>
                 </el-menu-item>
 
-                <el-menu-item index="5" :route="{ name: 'user' }">
+                <el-menu-item
+                  index="5"
+                  :route="{ name: 'user' }"
+                  v-if="has_permission('user')"
+                >
                   <template #title>
                     <el-icon><User /></el-icon>
                     <span>用户管理</span>
@@ -63,7 +83,7 @@
             <!-- 路由出口：路由匹配到的组件渲染在此 -->
             <router-view />
           </el-main>
-          <el-footer class="footer">这是Footer</el-footer>
+          <el-footer class="footer"></el-footer>
         </el-container>
       </el-container>
     </el-container>
@@ -90,7 +110,12 @@ export default {
   },
   mounted() {
     if (!this.$auth.is_staff) {
-      window.location.href = 'http://127.0.0.1:5000'
+      window.location.href = this.$http.server_host
+    }
+  },
+  methods: {
+    has_permission(permission) {
+      return this.$auth.user.permissions.indexOf(permission) > -1
     }
   }
 }
@@ -138,7 +163,7 @@ export default {
 }
 
 .footer {
-  background: gray;
+  background: #fff;
 }
 </style>
 

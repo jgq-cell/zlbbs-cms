@@ -189,7 +189,7 @@ export default {
           this.page = data.page
           this.count = data.count
         } else {
-          ElMessage.error('获取轮播图列表失败！')
+          ElMessage.error(res.message)
         }
       })
     },

@@ -8,5 +8,11 @@ module.exports = {
     'space-before-function-paren': 0,
     // 关闭组件命名规则
     'vue/multi-word-component-names': 'off'
+  },
+  // 解决process is not defined
+  globals: {
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly',
+    process: true
   }
 }

@@ -267,3 +267,27 @@ this.banners.splice(this.editIndex, 1, data)  # 替换索引为2的元素（先�
   />
 </div>
 ```
+
+### 6、项目打包
+
+npm run server：用的是 development 模式
+npm run build：默认用的是 production 模式
+npm run build -- --mode [模式，比如：development]来指定具体的模式
+
+不同的模式，会读取对应模式下的配置参数：
+
+- development 模式：.env.development 配置文件
+- production 模式：.env.production 配置文件
+
+在配置文件中，只能有三种类型的配置项：NODE_ENV，BASE_URL，以 VUE_APP 下划线开头的
+
+**打包命令**
+
+```
+# 开发模式
+npm run build -- --mode development  
+# 生产模式
+npm run build
+```
+
+`bug`: cnpm 打包会报错：Module not found: Error: Can't resolve 'D:\Projects\zlbbs\zlbbs-cms\development' in 'D:\Projects\zlbbs\zlbbs-cms'

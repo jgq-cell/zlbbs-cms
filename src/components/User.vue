@@ -2,6 +2,19 @@
   <div>
     <el-space direction="vertical" :size="20">
       <h1>用户管理</h1>
+      <el-tabs
+        v-model="tabName"
+        type="card"
+        class="demo-tabs"
+        @tab-click="onTabChange"
+      >
+        <el-tab-pane label="前台用户" name="first"></el-tab-pane>
+        <el-tab-pane
+          label="后台管理员"
+          name="second"
+          v-if="has_permission('cms_user')"
+        ></el-tab-pane>
+      </el-tabs>
       <el-table :data="users" style="width: 100%">
         <el-table-column prop="username" label="用户名" />
         <el-table-column prop="email" label="邮箱" />
@@ -59,6 +72,7 @@ export default {
   name: 'User',
   data() {
     return {
+      tabName: 'first',
       confirmDialogVisible: false,
       users: [],
       activingIndex: null,
@@ -68,11 +82,14 @@ export default {
     }
   },
   mounted() {
-    this.getUserList(1)
+    this.getUserList(1, 1)
   },
   methods: {
-    getUserList(page) {
-      this.$http.getUserList(page).then((res) => {
+    has_permission(permission) {
+      return this.$auth.user.permissions.indexOf(permission) > -1
+    },
+    getUserList(page, type) {
+      this.$http.getUserList(page, type).then((res) => {
         if (res.code === 200) {
           let data = res.data
           this.users = data.users
@@ -110,7 +127,16 @@ export default {
       })
     },
     onPageChange(current_page) {
-      this.getUserList(current_page)
+      this.getUserList(current_page, this.type)
+    },
+    onTabChange(tab) {
+      let type = null
+      if (tab.props.name == 'second') {
+        type = 2
+      } else if (tab.props.name == 'first') {
+        type = 1
+      }
+      this.getUserList(1, type)
     }
   },
   components: {
@@ -122,5 +148,11 @@ export default {
 <style scoped>
 .el-space {
   display: block;
+}
+.demo-tabs > .el-tabs__content {
+  padding: 32px;
+  color: #6b778c;
+  font-size: 32px;
+  font-weight: 600;
 }
 </style>
